@@ -1,0 +1,7 @@
+﻿Sample_Maze
+
+Figuras de fondo (sprites)
+
+1. Usar “MazeBreadthFirstsearc.java” y “MazeDepthFirstSearch.java” en este forder
+2. Copiar folder “images” dentro del directorio del proyecto
+3. Usar “Maze.java” provista en el folder
