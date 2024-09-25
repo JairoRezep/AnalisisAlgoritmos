@@ -89,9 +89,9 @@ public class MazeBreadthFirstSearch extends javax.swing.JFrame {
         try {
         	
             images = new BufferedImage[4];
-            images[0] = ImageIO.read(new File("images/brick.png"));
-            images[1] = ImageIO.read(new File("images/monster.png"));
-            images[2] = ImageIO.read(new File("images/pacman.png"));
+            images[0] = ImageIO.read(new File("./brick.png"));
+            images[1] = ImageIO.read(new File("./monster.png"));
+            images[2] = ImageIO.read(new File("./pacman.png"));
             
            
         } catch (IOException ex) {
