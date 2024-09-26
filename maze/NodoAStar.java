@@ -1,6 +1,8 @@
 import java.awt.Dimension;
 
-public class NodoAStar(){
+
+public class NodoAStar{
+
     private Dimension dimensionActual;
     private NodoAStar nodoAnterior;
     private int distanciaRecorrida, estimacionHeuristica, sumaDistancias;
@@ -17,9 +19,30 @@ public class NodoAStar(){
         sumaDistancias = distanciaRecorrida + estimacionHeuristica;
     }
 
-    public setNodoAnterior(NodoAStar nod, int dist){
+    public void setNodoAnterior(NodoAStar nod, int dist){
         nodoAnterior = nod;
         distanciaRecorrida = dist;
         sumaDistancias = distanciaRecorrida + estimacionHeuristica;
     }
+
+    public NodoAStar getNodoAnterior(){
+        return nodoAnterior;
+    }
+
+    public Dimension getDimensionActual(){
+        return dimensionActual;
+    }
+    
+    public int getDistanciaRecorrida(){
+        return distanciaRecorrida;
+    }
+
+    public int getSumaDistancias(){
+        return sumaDistancias;
+    }
+
+    public int getEstimacionHeuristica(){
+        return estimacionHeuristica;
+    }
+    
 }
