@@ -1,7 +1,7 @@
 import java.awt.Dimension;
 
 
-public class NodoAStar{
+public class NodoAStar implements Comparable<NodoAStar>{
 
     private Dimension dimensionActual;
     private NodoAStar nodoAnterior;
@@ -11,12 +11,21 @@ public class NodoAStar{
         distanciaRecorrida = -1;
     }
 
+    public NodoAStar(Dimension dim){
+        dimensionActual = dim;
+        distanciaRecorrida = 0;
+    }
+
     public NodoAStar(Dimension dim, NodoAStar prev, int dis, int est){
         dimensionActual = dim;
         nodoAnterior = prev;
         distanciaRecorrida = dis;
         estimacionHeuristica = est;
         sumaDistancias = distanciaRecorrida + estimacionHeuristica;
+    }
+
+    public int compareTo(NodoAStar nodo){
+        return Integer.compare(sumaDistancias, nodo.getSumaDistancias());
     }
 
     public void setNodoAnterior(NodoAStar nod, int dist){

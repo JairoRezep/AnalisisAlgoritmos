@@ -16,6 +16,7 @@
      }
  
      private void iterateSearch(Dimension loc, int depth) {
+        long startTime = System.currentTimeMillis();
          if (isSearching == false) return;
          maze.setValue(loc.width, loc.height, (short)depth);
          Dimension [] moves = getPossibleMoves(loc);
@@ -33,7 +34,13 @@
                  if (isSearching == false) return;
              }
          }
+
+         long endTime = System.currentTimeMillis();
+         long executionTime = endTime - startTime;
+ 
+         System.out.println("Tiempo de ejecución: " + executionTime + " ms");
          return;
+
      }
  }
  

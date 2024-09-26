@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.lang.Math;
 
 /**
  * Class Maze - private class for representing search space as a two-dimensional maze
@@ -37,17 +38,18 @@ public class Maze {
          * Randomize the maze by putting up arbitray obsticals
          */
         
-       /* int max_obsticles = (width * height) / 3;
+       int max_obsticles = (width * height) / 3;
         for (int i=0; i<max_obsticles; i++) {
             int x = (int)(Math.random()*width);
             int y = (int)(Math.random()*height);
             setValue(x, y, OBSTICLE);
-        }*/
+        }
         
         
         /**
          * Fixed obsticals
          */
+        /* 
         setValue(1, 3, OBSTICLE);
         setValue(2, 5, OBSTICLE);
         setValue(3, 7, OBSTICLE);
@@ -77,12 +79,12 @@ public class Maze {
         setValue(7, 4, OBSTICLE);
         setValue(8, 9, OBSTICLE);
         setValue(9, 2, OBSTICLE);
-        setValue(0, 8, OBSTICLE);
+        setValue(0, 7, OBSTICLE);
         setValue(1, 6, OBSTICLE);
         setValue(2, 4, OBSTICLE);
         setValue(3, 5, OBSTICLE);
         setValue(4, 1, OBSTICLE);
-        
+        */
        
 
         

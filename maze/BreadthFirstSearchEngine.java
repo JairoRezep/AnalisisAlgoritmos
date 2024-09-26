@@ -21,6 +21,7 @@ public class BreadthFirstSearchEngine extends AbstractSearchEngine{
     // y el segundo de la primera dimension o casilla que haga de predecesor.
 
     private void iterateSearch(Dimension loc, int depth) {
+        long startTime = System.currentTimeMillis();
         if (isSearching == false) return;
         
         maze.setValue(loc.width, loc.height, (short)depth);
@@ -50,7 +51,15 @@ public class BreadthFirstSearchEngine extends AbstractSearchEngine{
             casillasVisitadas.add(currentLoc);
             casillasPorVisitar.poll();
         }
+
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+
+        System.out.println("Tiempo de ejecución: " + executionTime + " ms");
+        
         return;
+
+       
     }
                                 
     @Override
@@ -59,7 +68,7 @@ public class BreadthFirstSearchEngine extends AbstractSearchEngine{
         Dimension [] caminoDimensiones = new Dimension[currentDimensionTracker.getDepth() - 1];
         currentDimensionTracker = currentDimensionTracker.getPrev();
 
-            for (int i = currentDimensionTracker.getDepth() - 1 ; i > -1; i --){
+        for (int i = currentDimensionTracker.getDepth() - 1 ; i > -1; i --){
             caminoDimensiones[i] = currentDimensionTracker.getCurrentDimension();
             currentDimensionTracker = currentDimensionTracker.getPrev();
         }
