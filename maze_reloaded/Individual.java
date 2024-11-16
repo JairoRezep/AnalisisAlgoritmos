@@ -5,16 +5,24 @@ import java.util.List;
 public class Individual {
     private Vector<Integer> movements;
     public int distanceFromObjective;
-    public boolean backTracked;
+    public int backTracked;
+    public int numberOfWallCrashes;
+    public int reachedDeadEnd;
+    public int[] currentCell;
+    public float fitnessValue;
+    public Vector<int[]> visitedCells;
 
     //Creates a new Individual with a random set of movements of the specified length
     Individual(Random ran, int length){
         // Creates a random movement list taking into account the length of the labyrinth
         movements = new Vector<Integer>();
 
+
         for (int i = 0; i < length; i ++){
-            movements.add(ran.nextInt(41));
+            movements.add(ran.nextInt(4));
         }
+
+        numberOfWallCrashes = 0;
     }
 
     //Creates a new Individual given their parents subset of movements and a mutation rate
@@ -48,18 +56,40 @@ public class Individual {
             }
             movements.add(parent1.get(j));
         }
+
+        numberOfWallCrashes = 0;
     }
 
-    //Creates a new Individual with a subset of movements of the original
+    //Modifies the Individual with a subset of movements of the original
     Individual(Individual ind, int maxLength){
         Vector<Integer> oldMovements = ind.getMovements();
+
         movements = new Vector<Integer>();
         for (int i = 0; i < maxLength; i++){
             movements.add(oldMovements.get(i));
         }
+
+        numberOfWallCrashes = 0;
     }
 
     public Vector<Integer> getMovements() {
+
         return movements;
     }
+
+    public boolean checkIfVisited(int[] eval){
+
+        boolean visited = false;
+
+        for (int i = 0; i < visitedCells.size(); i++){
+            if (visitedCells.get(i)[0] == eval[0] && visitedCells.get(i)[1] == eval[1]){
+                visited = true;
+                return visited;
+            }
+        }
+
+        return visited;
+
+    }
+
 }

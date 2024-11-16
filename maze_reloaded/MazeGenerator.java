@@ -107,6 +107,21 @@ public class MazeGenerator extends JPanel {
             repaint(); // Request a repaint to update the UI
         }
     }
+
+    public int[] getCellColorRGBA(int x, int y) {
+        if (x >= 0 && x < COLS && y >= 0 && y < ROWS) {
+            Color color = cellColors[y][x];
+            if (color != null) {
+                int red = color.getRed();
+                int green = color.getGreen();
+                int blue = color.getBlue();
+                int alpha = color.getAlpha();
+                return new int[]{red, green, blue, alpha};
+            }
+        }
+        return null; // Return null if the cell is out of bounds or no color is set
+    }
+    
     
     
 

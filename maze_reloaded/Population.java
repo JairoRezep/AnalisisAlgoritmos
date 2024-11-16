@@ -3,11 +3,11 @@ import java.util.Vector;
 import java.util.Collections; 
 
 public class Population {
-    Vector<Individual> populationIndividuals;
-    int generationNumber;
-    Random ran;
-    float mutationRate;
-    int populationSize;
+    public Vector<Individual> populationIndividuals;
+    public int generationNumber;
+    public Random ran;
+    private float mutationRate;
+    public int populationSize;
 
     //Population size must be even size
     Population(int numIndividuals, int mazeSize){
