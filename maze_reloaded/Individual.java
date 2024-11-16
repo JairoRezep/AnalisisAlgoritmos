@@ -16,7 +16,7 @@ public class Individual {
     Individual(Random ran, int length){
         // Creates a random movement list taking into account the length of the labyrinth
         movements = new Vector<Integer>();
-
+        visitedCells = new Vector<int[]>();
 
         for (int i = 0; i < length; i ++){
             movements.add(ran.nextInt(4));
@@ -29,6 +29,7 @@ public class Individual {
     Individual(List<Integer> parent1, List<Integer> parent2, Random ran, float mutationRate){
         // Creates a list fo movements with the length of the parents sublists
         movements = new Vector<Integer>();
+        visitedCells = new Vector<int[]>();
         
         // Combines the list taking into account mutation rate
         for (int i = 0 ; i < parent1.size(); i ++){
@@ -63,6 +64,7 @@ public class Individual {
     //Modifies the Individual with a subset of movements of the original
     Individual(Individual ind, int maxLength){
         Vector<Integer> oldMovements = ind.getMovements();
+        visitedCells = new Vector<int[]>();
 
         movements = new Vector<Integer>();
         for (int i = 0; i < maxLength; i++){
@@ -90,6 +92,10 @@ public class Individual {
 
         return visited;
 
+    }
+
+    public int calculateCurrentDistanceFromObjective(int[] objective){
+        return Math.abs(currentCell[0] - objective[0]) + Math.abs(currentCell[1] - objective[1]);
     }
 
 }

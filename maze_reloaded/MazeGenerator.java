@@ -13,8 +13,9 @@ public class MazeGenerator extends JPanel {
     private static final int WALL_THICKNESS = 2;
     private static final int BORDER_THICKNESS = 1;
     private boolean[][] visited;
-    private boolean[][][] walls;
+    public boolean[][][] walls;
     private Color[][] cellColors = new Color[ROWS][COLS];
+    public int[] initialCell, objectiveCell;
 
     public MazeGenerator() {
         visited = new boolean[ROWS][COLS];
@@ -31,7 +32,9 @@ public class MazeGenerator extends JPanel {
 
         // Generar el laberinto usando DFS
         generateMaze(0, 0);
-        paintCell(1, 1, Color.YELLOW);
+        paintCell(0, 0, Color.YELLOW);
+        paintCell(46, 47, Color.BLUE);
+        repaint();
     }
 
     private void generateMaze(int row, int col) {
@@ -104,7 +107,6 @@ public class MazeGenerator extends JPanel {
     public void paintCell(int x, int y, Color color) {
         if (x >= 0 && x < COLS && y >= 0 && y < ROWS) {
             cellColors[y][x] = color;
-            repaint(); // Request a repaint to update the UI
         }
     }
 
@@ -133,10 +135,13 @@ public class MazeGenerator extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Maze Generator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new MazeGenerator());
+        MazeGenerator maze = new MazeGenerator();
+        frame.add(maze);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        Fitness fit = new Fitness(100, ROWS * COLS, maze, new int[]{0,0}, new int[]{46, 45});
     }
 
     
