@@ -9,14 +9,16 @@ public class Individual {
     public int numberOfWallCrashes;
     public int reachedDeadEnd;
     public int[] currentCell;
-    public float fitnessValue;
+    public double fitnessValue;
     public int[] previousCell;
     public boolean objectiveFound;
     public int movementsPerformed;
+    public int cellRepetitionPenalization;
 
     //Creates a new Individual with a random set of movements of the specified length
     Individual(Random ran, int length){
         objectiveFound = false;
+        backTracked = 0;
         // Creates a random movement list taking into account the length of the labyrinth
         movements = new Vector<Integer>();
 
@@ -25,6 +27,7 @@ public class Individual {
         }
 
         numberOfWallCrashes = 0;
+        movementsPerformed = movements.size();
     }
 
     //Creates a new Individual given their parents subset of movements and a mutation rate
@@ -32,6 +35,7 @@ public class Individual {
         // Creates a list fo movements with the length of the parents sublists
         movements = new Vector<Integer>();
         objectiveFound = false;
+        backTracked = 0;
         
         // Combines the list taking into account mutation rate
         for (int i = 0 ; i < parent1.size(); i ++){
@@ -64,6 +68,7 @@ public class Individual {
         }
 
         numberOfWallCrashes = 0;
+        movementsPerformed = movements.size();
     }
 
     //Modifies the Individual with a subset of movements of the original
@@ -77,6 +82,8 @@ public class Individual {
         }
 
         numberOfWallCrashes = 0;
+        backTracked = 0;
+        movementsPerformed = movements.size();
     }
 
     public Vector<Integer> getMovements() {
@@ -103,30 +110,15 @@ public class Individual {
     }
 
     // Calculates a fitness value based on Individual performance on certain parameters
-    public float fitnessCheck(int[] objectiveCell){
-        float distanceFitness = 0;
-        float performanceFitness = (numberOfWallCrashes * 5 + (backTracked * 10) + reachedDeadEnd * 10);
-        int distance =  calculateCurrentDistanceFromObjective(objectiveCell);
-        if (distance == 0){
-            distanceFitness = 1;
-        }
-        else if(distance == 1){
-            distanceFitness = 0.75f;
-        }
-        else{
-            distanceFitness = 1 / distance;
-        }
-
-        if (performanceFitness == 0){
-            performanceFitness = 1;
-        }
-        else if(performanceFitness == 1){
-            performanceFitness = 1.5f;
-        }
-        else{
-
-        }
-        float formula = distanceFitness * (100 / performanceFitness);
+    public double fitnessCheck(int[] objectiveCell){
+        //float performanceFitness = (numberOfWallCrashes  + (backTracked * 10) + reachedDeadEnd * 40) + 1;
+        double distance =  calculateCurrentDistanceFromObjective(objectiveCell) + 1;
+        //double distanceFitness = (1000 / distance);
+        //double formula = distanceFitness * (10 / performanceFitness);
+        //ouble formula =  10000 / Math.abs(100 * distance + 10 * backTracked  + 2f * numberOfWallCrashes + 40 * (reachedDeadEnd));
+        double formula =  -10 * distance - 5 * numberOfWallCrashes - 400 * reachedDeadEnd - 8 * backTracked - (cellRepetitionPenalization * distance) * 100;
+        fitnessValue = formula;
+        System.out.println("DF " + distance  + " WC " + numberOfWallCrashes + " DE "+ reachedDeadEnd+ " FITNESS " + formula);
         return formula;
     }
 }

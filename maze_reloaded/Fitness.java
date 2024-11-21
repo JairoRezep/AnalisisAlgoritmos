@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.List;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class Fitness {
     //Creates a transparten red color
@@ -11,7 +12,7 @@ public class Fitness {
     public int[] objectiveCell;
     public int[] initialCell;
     Population population;
-
+    private java.util.HashMap<Vector<Integer>, Integer> cellRecord;
 
     Fitness(int populationSize,int mazeSize, MazeGenerator maze, int[] initial, int[] objective){
         population = new Population(populationSize, mazeSize);
@@ -19,15 +20,19 @@ public class Fitness {
         objectiveCell = objective;
         initialCell = initial;
         walls = generatedMaze.walls;
+        cellRecord = new HashMap<Vector<Integer>, Integer>();
 
         boolean foundPath = false;
         while (!foundPath) {
             generatedMaze.updateGeneration(population.generationNumber);
             makeMovements();
             foundPath = population.checkFitness(objective);
+            if (foundPath){
+                break;
+            }
             population.Breed();
         }
-        
+        System.out.println("Found path");
 
     }
 
@@ -79,8 +84,7 @@ public class Fitness {
                     //Checks if the cell was already visited
                     //if it was set the indiviual's value of tried to backtrack to 1
                     else if (individual.backTracked(nextCell)){
-                        individual.backTracked = 1;
-                        continue;
+                        individual.backTracked += 1;
                     }
                     
                     individual.previousCell = currentCell;
@@ -88,22 +92,23 @@ public class Fitness {
                     
 
                 }
-                // If it crashed with a wall, add it to the counter and don't update
+                // If it crashed with a wall and it is not on a dead end, 
+                //add it to the counter and don't update
                 // the current cell
                 else{
                     individual.numberOfWallCrashes += 1;
                 }
-                
             }
-            //Check if this cell is a dead end
-            checkDeadEnd();
-            System.out.println("Finished loop no " + i );
-            
+
             if (loopNumber % 3 == 0){
                 // Update UI
                 updateMazeUI();
             }
         }
+        //Check if the cell where they ended is a dead end and updates the record of the cell
+        UpdateCellRecord();
+        AsignCellRecord();
+        checkDeadEnd();
     }
 
     // Set the current cell of all the individuals of the population to
@@ -118,8 +123,10 @@ public class Fitness {
 
         for (Individual individual : population.populationIndividuals){
             int[] cell = individual.currentCell;
-
-            if ((cell[0] > 49 || cell[0] < 0 || cell[1] > 49 || cell[1] < 0) || (cell[0] == initialCell[0] && cell[1] == initialCell[1])){
+            if (Arrays.equals(cell, initialCell)){
+                continue;
+            }
+            if ((cell[0] > 19 || cell[0] < 0 || cell[1] > 19 || cell[1] < 0)){
                 return;
             }
             int wallCounter = 0;
@@ -169,7 +176,6 @@ public class Fitness {
                     continue;
                 }
                 else if (redKeySet.contains(currentCell)){
-                    System.out.println("No of cells in " + x + " " + y + " is " + redCells.get(currentCell));
                     int alphaValue = 55 + (15 * redCells.get(currentCell));
                     if (alphaValue > 255){
                         alphaValue = 255;
@@ -183,8 +189,7 @@ public class Fitness {
             }
         }
 
-        generatedMaze.repaint();
-        
+        generatedMaze.repaint();;
     }
 
     //Slows down the Update of the UI based on the amount of movements that are left to perform
@@ -196,6 +201,26 @@ public class Fitness {
         }
         catch(InterruptedException e){
             System.out.println(e);
+        }
+    }
+
+    private void UpdateCellRecord(){
+        for (Individual individual : population.populationIndividuals){
+            int[] cell = individual.currentCell;
+            Vector<Integer> cellAsVector = new Vector<>(Arrays.asList(cell[0], cell[1]));
+            if (cellRecord.containsKey(cellAsVector)){
+                cellRecord.put(cellAsVector, cellRecord.get(cellAsVector) + 1);
+            }
+            else{
+                cellRecord.put(cellAsVector, 1);
+            }
+        }
+    }
+
+    private void AsignCellRecord(){
+        for (Individual individual : population.populationIndividuals){
+            Vector<Integer> cell = new Vector<>(Arrays.asList(individual.currentCell[0], individual.currentCell[1]));
+            individual.cellRepetitionPenalization = cellRecord.get(cell);
         }
     }
 }
